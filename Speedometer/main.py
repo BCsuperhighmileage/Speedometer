@@ -18,8 +18,8 @@ current_list = []
 eraser_num = -1
 
 #Opens Speedometer/Timestamps file in read mode
-f = open('speedometer/timestamps.csv','r')
-reader = csv.reader(f)
+file = open('Speedometer/timestamps.csv','r')
+reader = csv.reader(file)
 
 #Constants
 WHEEL_DIAMETER = 20 
@@ -122,9 +122,9 @@ def set_up_program(marker_number_x, marker_number_y):
 
     #Sets up the Runner Turtle
     extras_turtle.right(180)
-    extras_turtle.forward(620)
+    extras_turtle.forward(590)
     extras_turtle.right(90)
-    extras_turtle.forward(830) #810
+    extras_turtle.forward(810)
     extras_turtle.right(90)
     extras_turtle.write("Running", font=("Arial", 16, "normal"))
     extras_turtle.forward(30)
@@ -157,7 +157,7 @@ def set_up_program(marker_number_x, marker_number_y):
     mph_txt_turtle.right(180)
     mph_txt_turtle.forward(600)
     mph_txt_turtle.right(90)
-    mph_txt_turtle.forward(400)
+    mph_txt_turtle.forward(380)
     mph_txt_turtle.right(90)
     mph_txt_turtle.forward(50)
     mph_txt_turtle.hideturtle()
@@ -167,7 +167,7 @@ def set_up_program(marker_number_x, marker_number_y):
     mph_turtle.hideturtle()
     mph_turtle.penup()
     mph_turtle.left(180)
-    mph_turtle.forward(545)
+    mph_turtle.forward(520)
     mph_turtle.right(90)
     mph_turtle.forward(360)
 
@@ -255,7 +255,6 @@ while True:
     for line in reader:
         times.append(int(line[0]))
 
-
     #Sets and Add seconds 
     seconds = seconds + TIME_BETWEEN_RUNNING
 
@@ -263,26 +262,29 @@ while True:
     for num in range(len(times) - test_number):
         milliseconds = times[num+1] - times[num]
 
-        #Makes sure the speed is 
         if speed == 0:
             break
-        speed = wheel_circumference / milliseconds
-        speed = speed * MILLISECONDS_PER_HOUR / INCHES_IN_MILE
+
+    speed = wheel_circumference / milliseconds
+    speed = speed * MILLISECONDS_PER_HOUR / INCHES_IN_MILE
     test_number = test_number + 1
 
 
     #Append speed to current list for the eraser dot
     current_list.append(speed)
 
+    mph_turtle.clear()
+    speed = str(speed)
+    speed = speed[:1]
+    mph_turtle.write(speed, font=("Arial", 16, "normal"))
+    speed = int(speed)
+
     #Sets the X & Y cords and Graphs it
     x = seconds * 18 #Determines space between X dots
     y = speed * 19 #Determines space between Y dots
     graph_new_point(x, y)
-
-
     print(seconds)
-
-    if seconds >= 38:
+    if seconds >= 63:
         seconds = 0
         always_on = True
 
@@ -295,13 +297,8 @@ while True:
     #Displays and Updates the mph_turtle
     old_times_list.append(y)
     old_mph_list.append(x)
-    if seconds > 35 or always_on == True:
+    if seconds > 58 or always_on == True:
         old_x = old_mph_list[number_bookmark]
         old_y = old_times_list[number_bookmark]
         erase_point(old_x, old_y)
         number_bookmark = number_bookmark + 1
-    
-    #Displays and Updates the mph_turtle
-    mph_turtle.clear()
-    mph_turtle.write(speed, font=("Arial", 16, "normal"))
-    
